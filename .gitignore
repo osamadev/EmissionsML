@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+LAEI2019_dataset/
 build/
 develop-eggs/
 dist/
