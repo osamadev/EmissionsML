@@ -13,6 +13,7 @@ build/
 develop-eggs/
 dist/
 downloads/
+checkpoints/
 eggs/
 .eggs/
 lib/
