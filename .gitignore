@@ -13,7 +13,7 @@ build/
 develop-eggs/
 dist/
 downloads/
-checkpoints/
+checkpoints/*.pkl
 eggs/
 .eggs/
 lib/
