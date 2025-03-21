@@ -12,7 +12,8 @@ The project aims to **preprocess emissions data**, **apply machine learning mode
 ```
 📁 EMISSIONSML/
 │
-├── checkpoints/                       # Model checkpoints (if applicable)
+├── checkpoints/                       # Model checkpoints (if applicable, ignoring .pkl files)
+│   ├── .gitkeep                        # Keeps the folder tracked in Git
 │
 ├── helpers/                           # Utility functions for processing data, training and evaluating ML models 
 │   ├── utilities.py                   # Helper functions for processing data, training and evaluating ML models 
@@ -28,7 +29,8 @@ The project aims to **preprocess emissions data**, **apply machine learning mode
 │
 ├── .gitignore                           # Ignore unnecessary files
 ├── .gitattributes                        # Git repository attributes
-└── README.md                            
+├── requirements.txt                      # Dependencies file
+└── README.md                             
 ```
 
 ---
@@ -58,7 +60,7 @@ The project aims to **preprocess emissions data**, **apply machine learning mode
 | Feature | Description |
 |---------|------------|
 | `final_dataset.csv` | Preprocessed dataset after data wrangling and cleansing |
-| `random_forest_model.pkl` | Trained emissions regession model |
+| `random_forest_model.pkl` | Trained emissions regression model |
 
 ---
 
@@ -72,7 +74,7 @@ cd emissionsml
 
 ### 2️⃣ Install Dependencies
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn joblib
+pip install -r requirements.txt
 ```
 
 ### 3️⃣ Run the Notebooks
