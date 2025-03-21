@@ -58,8 +58,8 @@ The project aims to **preprocess emissions data**, **apply machine learning mode
 
 | Feature | Description |
 |---------|------------|
-| `clean_emissions.csv` | Preprocessed dataset with borough-wise emissions |
-| `random_forest_model.pkl` | Trained emissions forecasting model |
+| `final_dataset.csv` | Preprocessed dataset after data wrangling and cleansing |
+| `random_forest_model.pkl` | Trained emissions regession model |
 
 ---
 
