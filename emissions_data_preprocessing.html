@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7579,9 +7580,9 @@ a.anchor-link {
 </li>
 <li><p><strong>Policy Impact</strong>:</p>
 <ul>
-<li>The Mayor’s policies, including the ULEZ and Low Emission Zone (LEZ), have significantly reduced emissions, mainly from road transport.</li>
+<li>The Mayor’s policies, including the ULEZ and Low Emission Zone (LEZ), have significantly reduced emissions, mainly from road transport.
+However, to meet WHO guidelines, further action is needed to address non-transport sources of pollution, such as construction, wood burning, and industrial processes.</li>
 </ul>
-<p>However, to meet WHO guidelines, further action is needed to address non-transport sources of pollution, such as construction, wood burning, and industrial processes.</p>
 </li>
 <li><p><strong>WHO Guidelines vs. UK Legal Limits</strong>:</p>
 <ul>
@@ -39024,7 +39025,7 @@ dtype: int64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [62]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">df_correlations</span><span class="p">[</span><span class="s1">'sum'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_correlations</span><span class="p">[</span><span class="s1">'pearson_co2'</span><span class="p">]</span> <span class="o">+</span> <span class="n">df_correlations</span><span class="p">[</span><span class="s1">'spearman_co2'</span><span class="p">]</span> <span class="o">+</span> <span class="n">df_correlations</span><span class="p">[</span><span class="s1">'kendall_co2'</span><span class="p">]</span>
@@ -39070,7 +39071,7 @@ dtype: int64</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[62]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>Text(0.5, 1.0, 'Correlation Matrix')</pre>
 </div>
