@@ -14,8 +14,8 @@ The project aims to **preprocess emissions data**, **apply machine learning mode
 │
 ├── checkpoints/                       # Model checkpoints (if applicable)
 │
-├── helpers/                           # Utility functions for data processing
-│   ├── __pycache__/                   
+├── helpers/                           # Utility functions for processing data, training and evaluating ML models 
+│   ├                
 │   ├── utilities.py                   # Helper functions for processing data, training and evaluating ML models 
 │
 ├── LAEI2019_dataset/                   # Raw London emissions dataset
