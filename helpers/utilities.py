@@ -370,9 +370,6 @@ def plot_mlp_feature_importance(pipeline, X, y):
     - mlp_regressor: The trained MLPRegressor model (should be extracted from a pipeline if needed).
     - X: The feature matrix (DataFrame).
     - y: The target variable(s) (DataFrame with multiple columns for multi-output regression).
-    
-    Returns:
-    - Displays a bar plot for feature importance for each target variable.
     """
 
     # Extract the actual MLPRegressor from the pipeline
@@ -408,7 +405,6 @@ def plot_mlp_feature_importance(pipeline, X, y):
     plt.tight_layout()
     plt.show()
 
-    return feature_importance  # Return the DataFrame for further analysis if needed
     
 
 def remove_outliers_iqr(data_filename, target_columns):
@@ -487,7 +483,7 @@ def smart_grid_search(model, model_name, param_grid, X_train, y_train, X_test, y
     
     
     # Perform Grid Search
-    grid_search = GridSearchCV(model, param_grid, cv=kfold, scoring=scoring, n_jobs=1, verbose=0)
+    grid_search = GridSearchCV(model, param_grid, cv=kfold, scoring=scoring, n_jobs=1, verbose=2)
     grid_search.fit(X_train, y_train)
 
     # Evaluate model on test data
@@ -535,7 +531,7 @@ def smart_grid_search(model, model_name, param_grid, X_train, y_train, X_test, y
     metrics_df = pd.concat([metrics_df, overall_metrics])
 
 
-    print(f"\n✅ Best Parameters for {model_name}: {grid_search.best_params_}")
+    print(f"\n✅ Best Parameters for {model_name}: {grid_search.best_params_}\n")
     print(f"📊 Metrics evaluations of the Best Parameters:\n")
     print(metrics_df)
 
@@ -543,7 +539,7 @@ def smart_grid_search(model, model_name, param_grid, X_train, y_train, X_test, y
     if save_model:
         filename = f"./checkpoints/{model_name}_best_model.pkl"
         joblib.dump(grid_search.best_estimator_, filename)
-        print(f"💾 Model saved: {filename}")
+        print(f"\n💾 Model saved: {filename}")
 
     return results,metrics_df
 
@@ -607,8 +603,8 @@ def smart_grid_search_advanced(
         param_distributions=param_grid if use_random_search else param_grid,  # param_distributions for RandomizedSearchCV
         cv=kfold,
         scoring=scoring,
-        n_jobs=-1,
-        verbose=0,
+        n_jobs=1,
+        verbose=3,
         n_iter=n_iter if use_random_search else None  # n_iter only applies to RandomizedSearchCV
     )
 
@@ -668,11 +664,20 @@ def smart_grid_search_advanced(
     if save_model:
         filename = f"./checkpoints/{model_name}_best_model.pkl"
         joblib.dump(search.best_estimator_, filename)
-        print(f"💾 Model saved: {filename}")
+        print(f"\n💾 Model saved: {filename}")
 
     return results, metrics_df
 
 def display_side_by_side(df1, df2, df1_title="Evaluation of initial modelling", df2_title="Evaluation of improved modelling"):
+    """
+    Displays two pandas DataFrames side by side in an HTML format for easy comparison.
+
+    Parameters:
+    - df1: First DataFrame to display (e.g., initial model evaluation results).
+    - df2: Second DataFrame to display (e.g., improved model evaluation results).
+    - df1_title: Title for the first DataFrame (default: "Evaluation of initial modelling").
+    - df2_title: Title for the second DataFrame (default: "Evaluation of improved modelling").
+    """
     display(HTML(
         f"""
         <div style="display: flex; justify-content: space-around;">
