@@ -49,7 +49,7 @@ The project aims to **preprocess emissions data**, **apply machine learning mode
 - Outputs a **preprocessed dataset** ready for modeling.
 
 ### 3️⃣ **Machine Learning Modeling (`emissions_modeling.ipynb`)**
-- Applies **ML models** (XGBoost, Random Forest, Ridge, MLP regressors) to predict multi-output emissions for the 4 main emission types (CO2, NO2, PM2.5 and PM10).
+- Applies **ML models** (Random Forest, Ridge, MLP regressors) to predict multi-output emissions for the 4 main emission types (CO2, NO2, PM2.5 and PM10).
 - Evaluates models using **R² score, RMSE, and feature importance analysis**.
 - Provides **visualizations** (actual vs. predicted emissions, feature importance visuals).
 
