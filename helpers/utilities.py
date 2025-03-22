@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import math
 import pickle
+from sklearn import feature_selection
 from sklearn.model_selection import GridSearchCV, KFold, RandomizedSearchCV
 import numpy as np
 import seaborn as sns
@@ -14,15 +15,54 @@ from sklearn.inspection import permutation_importance
 from sklearn.multioutput import MultiOutputRegressor
 from IPython.display import display, HTML
 
+def remove_all_zero_rows(df, subset=None, exclude=None):
+    """
+    Removes rows where all specified (or all numeric) columns have a value of zero,
+    with optional exclusion of some columns.
+    """
+    if subset is None:
+        subset = df.select_dtypes(include='number').columns.tolist()
+
+    if exclude is not None:
+        subset = [col for col in subset if col not in exclude]
+
+    # Create a mask where all values in the row for the subset are zero
+    mask_all_zeros = (df[subset] == 0).all(axis=1)
+
+    print(f"Removed {mask_all_zeros.sum()} all-zero rows (based on {len(subset)} columns).")
+
+    return df[~mask_all_zeros].copy()
+
+def plot_correlation_matrix(correlations_df, original_df, top_n=40, correlation_cols=None, title="Correlation Matrix", figsize=(12, 10)):
+    """
+    Plots a heatmap of the correlation matrix for the top N correlated features.
+    """
+    if correlation_cols is None:
+        correlation_cols = ['pearson_co2_avg', 'spearman_co2_avg', 'kendall_co2_avg']
+
+    # Calculate a combined score to rank features
+    correlations_df['sum'] = correlations_df[correlation_cols].sum(axis=1)
+
+    # Select top N features by combined correlation strength
+    top_features_df = correlations_df.nlargest(top_n, 'sum')
+    selected_columns = top_features_df.index.tolist()
+
+    # Extract from original dataset
+    df_processed = original_df[selected_columns]
+
+    # Generate and show correlation heatmap
+    corr_matrix = df_processed.corr()
+    plt.figure(figsize=figsize)
+    sns.heatmap(corr_matrix, cmap='coolwarm', annot=False, fmt=".2f", linewidths=0.5)
+    plt.title(title, fontsize=14, weight='bold')
+    plt.tight_layout()
+    plt.show()
+
+    return selected_columns
 
 def plot_correlation_heatmap(df, figsize=(17, 10), title='Correlation between features'):
     """
     Plots a heatmap showing the correlation between variables in a DataFrame.
-    
-    Parameters:
-    df (pd.DataFrame): The DataFrame containing variables.
-    figsize (tuple): Figure size for the heatmap.
-    title (str): Title of the heatmap.
     """
     plt.figure(figsize=figsize)
     sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
@@ -359,8 +399,6 @@ def plot_ridge_feature_importance(ridge_model, X, target_columns):
     plt.tight_layout()
     plt.show()
 
-import pandas as pd
-import matplotlib.pyplot as plt
 
 def plot_mlp_feature_importance(pipeline, X, y):
     """
@@ -405,9 +443,125 @@ def plot_mlp_feature_importance(pipeline, X, y):
     plt.tight_layout()
     plt.show()
 
-    
 
-def remove_outliers_iqr(data_filename, target_columns):
+def detect_outliers_iqr(df, target_columns, plot=True, scatter=True, scatter_x=None):
+    """
+    Detects and visualizes outliers using the IQR method with compact grid plotting.
+    """
+    sns.set(style="whitegrid")
+    palette = sns.color_palette("Set2")
+
+    outlier_masks = {}
+    combined_mask = pd.Series([False] * len(df), index=df.index)
+
+    # Detect outliers using IQR
+    for col in target_columns:
+        Q1 = df[col].quantile(0.25)
+        Q3 = df[col].quantile(0.75)
+        IQR = Q3 - Q1
+        lower = Q1 - 1.5 * IQR
+        upper = Q3 + 1.5 * IQR
+        mask = (df[col] < lower) | (df[col] > upper)
+        outlier_masks[col] = mask
+        combined_mask |= mask
+        print(f"{col}: {mask.sum()} outliers detected")
+
+    outliers_df = df[combined_mask]
+    print(f"\nTotal outlier rows: {len(outliers_df)} out of {len(df)} ({len(outliers_df) * 100 / len(df):.2f}%)")
+
+    # Compact grid plots
+    n = len(target_columns)
+
+    if plot:
+        fig, axes = plt.subplots(1, n, figsize=(4 * n, 3))
+        axes = axes if isinstance(axes, (list, np.ndarray)) else [axes]
+
+        for i, col in enumerate(target_columns):
+            sns.boxplot(x=df[col], ax=axes[i], color=palette[i % len(palette)], linewidth=1.5, fliersize=4)
+            axes[i].set_title(f"Boxplot: {col}", fontsize=11)
+            axes[i].set_xlabel(col)
+            axes[i].grid(True, linestyle='--', linewidth=0.5)
+
+        plt.tight_layout()
+        plt.show()
+
+    if scatter and scatter_x and scatter_x in df.columns:
+        fig, axes = plt.subplots(len(target_columns), 1, figsize=(7, 3 * len(target_columns)))
+
+        if len(target_columns) == 1:
+            axes = [axes]
+
+        for i, col in enumerate(target_columns):
+            sns.scatterplot(data=df, x=scatter_x, y=col, ax=axes[i], color=palette[i % len(palette)], s=40)
+            sns.scatterplot(data=outliers_df, x=scatter_x, y=col, ax=axes[i], color='red', marker='X', s=50, label='Outliers')
+            axes[i].set_title(f"{col} vs {scatter_x}", fontsize=11)
+            axes[i].grid(True, linestyle='--', linewidth=0.5)
+
+        plt.tight_layout()
+        plt.show()
+
+    return outliers_df
+
+def analyze_correlations(df, target_column="co2_avg"):
+    """
+    Computes correlation metrics and feature importance scores with respect to a target emission column.
+    """
+    df_correlations = pd.DataFrame(index=df.columns)
+
+    # Pearson, Spearman, Kendall
+    df_correlations[f"pearson_{target_column}"] = df.corrwith(df[target_column])
+    df_correlations[f"spearman_{target_column}"] = df.corrwith(df[target_column], method="spearman")
+    df_correlations[f"kendall_{target_column}"] = df.corrwith(df[target_column], method="kendall")
+
+    # Select numeric float columns only
+    float_columns = [col for col in df.columns if df[col].dtype == float and col != target_column]
+
+    X = df[float_columns].copy()
+    y = df[target_column].copy()
+
+    X.fillna(0, inplace=True)
+    y.fillna(0, inplace=True)
+
+    # F-statistics
+    fs = feature_selection.f_regression(X, y, center=True)
+    f_statistic = pd.Series([round(f, 10) for f in fs[0]], index=float_columns)
+    df_correlations[f"f_statistic_{target_column}"] = f_statistic
+
+    # Mutual Information
+    mi_r = feature_selection.mutual_info_regression(X, y)
+    mi_r_series = pd.Series(mi_r, index=float_columns)
+    df_correlations[f"mi_r_{target_column}"] = mi_r_series
+
+    # Drop the row for the target itself to avoid self-correlation clutter
+    df_correlations = df_correlations.drop(index=target_column)
+
+    # Sort by absolute Pearson correlation (you can change to another metric if preferred)
+    df_correlations["abs_pearson"] = df_correlations[f"pearson_{target_column}"].abs()
+    df_sorted = df_correlations.sort_values("abs_pearson", ascending=False).drop(columns=["abs_pearson"])
+
+    return df_sorted
+
+def correlate_targets(df, target_columns, feature_columns, method='pearson', plot=True):
+    """
+    Calculates and visualizes correlation between emissions target variables and selected feature(s).
+    """
+    # Combine and compute correlation
+    selected_cols = feature_columns + target_columns
+    corr_matrix = df[selected_cols].corr(method=method)
+
+    # Slice correlation matrix to show only target-feature correlation
+    corr_targets = corr_matrix.loc[feature_columns, target_columns]
+
+    if plot:
+        plt.figure(figsize=(1.2 * len(target_columns), 0.6 * len(feature_columns) + 1))
+        sns.heatmap(corr_targets, annot=True, cmap='coolwarm', center=0, linewidths=0.5, fmt=".2f")
+        plt.title(f"{method.capitalize()} Correlation: Features vs Targets", fontsize=12, weight='bold')
+        plt.tight_layout()
+        plt.show()
+
+    return corr_targets
+
+def remove_outliers_iqr(df, target_columns):
     """
     Removes outliers from the specified columns in a dataset using the Interquartile Range (IQR) method.
 
@@ -418,17 +572,15 @@ def remove_outliers_iqr(data_filename, target_columns):
     Returns:
     - pd.DataFrame: A new DataFrame with outliers removed.
     """
-    # load dataframe
-    data = pd.read_csv(data_filename)
     
-    print("Shape before removing outliers:", data.shape)
+    print("Shape before removing outliers:", df.shape)
     
     # Store initial count
-    initial_target_count = len(data)
+    initial_target_count = len(df)
     
     # Compute IQR for selected columns
-    Q1 = data[target_columns].quantile(0.25)
-    Q3 = data[target_columns].quantile(0.75)
+    Q1 = df[target_columns].quantile(0.25)
+    Q3 = df[target_columns].quantile(0.75)
     IQR = Q3 - Q1
     
     # Define bounds
@@ -436,10 +588,10 @@ def remove_outliers_iqr(data_filename, target_columns):
     upper_bound = Q3 + 1.5 * IQR
     
     # Keep only rows where all target columns are within bounds
-    mask = (data[target_columns] >= lower_bound) & (data[target_columns] <= upper_bound)
+    mask = (df[target_columns] >= lower_bound) & (df[target_columns] <= upper_bound)
     
     # Filter data: keep rows where ALL selected columns are within bounds
-    data_filtered = data[mask.all(axis=1)]
+    data_filtered = df[mask.all(axis=1)]
 
     removed_count = initial_target_count - len(data_filtered)
     remove_count_pourcentage = removed_count*100/initial_target_count
@@ -483,7 +635,7 @@ def smart_grid_search(model, model_name, param_grid, X_train, y_train, X_test, y
     
     
     # Perform Grid Search
-    grid_search = GridSearchCV(model, param_grid, cv=kfold, scoring=scoring, n_jobs=1, verbose=2)
+    grid_search = GridSearchCV(model, param_grid, cv=kfold, scoring=scoring, n_jobs=-1, verbose=1)
     grid_search.fit(X_train, y_train)
 
     # Evaluate model on test data
@@ -603,8 +755,8 @@ def smart_grid_search_advanced(
         param_distributions=param_grid if use_random_search else param_grid,  # param_distributions for RandomizedSearchCV
         cv=kfold,
         scoring=scoring,
-        n_jobs=1,
-        verbose=3,
+        n_jobs=-1,
+        verbose=1,
         n_iter=n_iter if use_random_search else None  # n_iter only applies to RandomizedSearchCV
     )
 
