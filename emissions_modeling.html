@@ -7312,7 +7312,6 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
-                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7519,7 +7518,7 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><img alt="purple-divider" src="https://user-images.githubusercontent.com/7065401/52071927-c1cd7100-2562-11e9-908a-dde91ba14e59.png"/></p>
 <h1 id="MACHINE-LEARNING-IN-PRACTICE:-END-MODULE-ASSIGNMENT">MACHINE LEARNING IN PRACTICE: END MODULE ASSIGNMENT<a class="anchor-link" href="#MACHINE-LEARNING-IN-PRACTICE:-END-MODULE-ASSIGNMENT">¶</a></h1><p>The objective of this assignment is to help with the development of machine learning-based models for predicting atmospheric emissions (and pollution) from data gathered by various borough and county environment monitoring units by carrying out several tasks using the Anaconda/Scikit-Learn Python ML framework and its components.</p>
-<h1 id="SECTION-2:-EMISSIONS-MODELLING-AND-INTERPRETATIONS">SECTION 2: EMISSIONS MODELLING AND INTERPRETATIONS<a class="anchor-link" href="#SECTION-2:-EMISSIONS-MODELLING-AND-INTERPRETATIONS">¶</a></h1><p>This section comprises the algorithms we have selected and the interpretations that arise from modelling these algorithms.</p>
+<h1 id="SECTION-2:-EMISSIONS-MODELLING-AND-INTERPRETATIONS">SECTION 2: EMISSIONS MODELLING AND INTERPRETATIONS<a class="anchor-link" href="#SECTION-2:-EMISSIONS-MODELLING-AND-INTERPRETATIONS">¶</a></h1><p>This section comprises the selected algorithms and the interpretations that arise from modelling these algorithms.</p>
 </div>
 </div>
 </div>
@@ -7864,14 +7863,10 @@ As we do not want to suppress any of these characteristics for the purposes of i
 <p><strong>Evaulations metrics considerations</strong></p>
 <p>As we are going to use Regression Supervised Machines Learning, we are going to use the following metrics to evaluate the algorithms performace:</p>
 <p><strong>Mean Absolute Error</strong> (MAE) is the average absolute difference between actual and predicted values :</p>
-<p>$$\frac 1n\sum_{i=1}^n|y_i-\hat{y}_i|$$</p>
-<p><strong>R Squared</strong> (R²) is the coefficient of determination. It represents the proportion of the variance in y that is predictable from the independent variables (X).</p>
-<p>$$1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$$</p>
-<p><strong>Mean Squared Error</strong> (MSE) is the mean square error. It penalises larger errors more heavily than MAE since it squares the errors.</p>
-<p>$$\frac 1n\sum_{i=1}^n(y_i-\hat{y}_i)^2$$</p>
-<p><strong>Root Mean Squared Error</strong> (RMSE) is the square root of the mean error squared. It is the square root of MSE and gives an error measure in the same units as the data.</p>
-<p>$$\sqrt{\frac 1n\sum_{i=1}^n(y_i-\hat{y}_i)^2}$$</p>
-<ul>
+$$\frac 1n\sum_{i=1}^n|y_i-\hat{y}_i|$$<p><strong>R Squared</strong> (R²) is the coefficient of determination. It represents the proportion of the variance in y that is predictable from the independent variables (X).</p>
+$$1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$$<p><strong>Mean Squared Error</strong> (MSE) is the mean square error. It penalises larger errors more heavily than MAE since it squares the errors.</p>
+$$\frac 1n\sum_{i=1}^n(y_i-\hat{y}_i)^2$$<p><strong>Root Mean Squared Error</strong> (RMSE) is the square root of the mean error squared. It is the square root of MSE and gives an error measure in the same units as the data.</p>
+$$\sqrt{\frac 1n\sum_{i=1}^n(y_i-\hat{y}_i)^2}$$<ul>
 <li><strong>MAE</strong> is the average error.</li>
 <li><strong>R²</strong> quantifies how well the regression model fits the observed data</li>
 <li><strong>MSE</strong> <em>penalise</em> larger errors, which tends to be useful in the real world.</li>
@@ -8489,24 +8484,31 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Comments on metrics evaluation</strong></p>
 <p><em>Mean Absolute Error (MAE)</em></p>
-<pre><code>CO₂_avg: 0.407014 → Shows good accuracy.
+<pre><code>CO₂_avg: 0.407614 → Shows good accuracy.
 PM10_avg: 0.000046 and PM25_avg: 0.000023 → Very small errors, indicating good predictions.
 NO₂_avg: 0.000887 → Still very low, suggesting minimal deviation in predictions.
-Overall MAE: 0.101993, meaning the model makes small absolute errors across all pollutants.</code></pre>
+Overall MAE: 0.102143, meaning the model makes small absolute errors across all pollutants.
+
+</code></pre>
 <p><em>R squared (R²)</em></p>
 <pre><code>CO₂_avg: 0.9269 → high, meaning the model captures nearly all CO₂ variance.
 PM10_avg: 0.979723, PM25_avg: 0.982561, NO₂_avg: 0.956648 → All values above 0.95 show good prediction ability.
-Overall R²: 0.956648, meaning the model explains 95.66% of the variance in pollutant levels.</code></pre>
+Overall R²: 0.956648, meaning the model explains 95.66% of the variance in pollutant levels.
+
+</code></pre>
 <p><em>Mean Squared Error (MSE)</em></p>
 <pre><code>CO₂_avg: 5.411470e-01 → The result indicates a small error.
 PM10_avg: 1.560299e-08 and PM25_avg: 3.283933e-09 → Tiny errors, showing good precision.
 NO₂_avg: 2.510317e-06 → Small value, reinforcing accuracy.
-Overall MSE: 1.352874e-01. This indicates low overall error.</code></pre>
+Overall MSE: 1.352874e-01. This indicates low overall error.
+
+</code></pre>
 <p><em>Root Mean Squared Error (RMSE)</em></p>
 <pre><code>CO₂_avg: 0.735627 → slightly higher than MSE.
 PM10_avg: 0.000125 and PM25_avg: 0.000057 → Very small errors, proving high accuracy.
 NO₂_avg: 0.001584 → Still low, reinforcing strong predictive ability.
-Overall RMSE: 0.367814, indicating good overall accuracy. </code></pre>
+Overall RMSE: 0.367814, indicating good overall accuracy. 
+</code></pre>
 </div>
 </div>
 </div>
@@ -8551,7 +8553,7 @@ Model loaded from ./checkpoints/random_forest_regressor.pkl
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Compare some predictions and related actual values</span>
-<span class="n">rf_predictions</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">compare_predictions</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'Random Forest Regressor'</span><span class="p">)</span>
+<span class="n">rf_predictions</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">compare_predictions</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_rf</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'Random Forest Regressor'</span><span class="p">)</span>
 <span class="n">rf_predictions</span>
 </pre></div>
 </div>
@@ -8712,10 +8714,13 @@ Model loaded from ./checkpoints/random_forest_regressor.pkl
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Overall Interpretation</strong></p>
 <p>✅ Performance:</p>
-<pre><code>Random Forest maintains high accuracy with low error values.</code></pre>
+<pre><code>Random Forest maintains high accuracy with low error values.
+
+</code></pre>
 <p>⚠️ Potential Areas for Improvement:</p>
 <pre><code>Hyperparameter tuning could help enhance the model and avoid overfitting.
-Interpretability: Random forest models can be more complex to interpret. And here as well, including systems such as XAI could hep enhance the interpretation.</code></pre>
+Interpretability: Random forest models can be more complex to interpret. And here as well, including systems such as XAI could hep enhance the interpretation.
+</code></pre>
 </div>
 </div>
 </div>
@@ -9293,21 +9298,28 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 <pre><code>CO₂_avg: 0.457072 → Slightly higher than Random Forest but still suggests good accuracy.
 PM10_avg: 0.000059 and PM25_avg: 0.000029 → These values are small, indicating good predictions.
 NO₂_avg: 0.001025 → Small deviation, showing quite strong predictive performance.
-Overall MAE: 0.114546 → Small absolute error across all pollutants, reinforcing good model accuracy.</code></pre>
+Overall MAE: 0.114546 → Small absolute error across all pollutants, reinforcing good model accuracy.
+
+</code></pre>
 <p><em>R squared (R²)</em></p>
 <pre><code>CO₂_avg: 0.916328 → high value, meaning the model captures a good amount of variance in CO₂ levels.
 PM10_avg: 0.971795, PM25_avg: 0.976000, NO₂_avg: 0.976000 → All values above 0.97 demonstrate very good predictive ability.
-Overall R²: 0.947417 → The model explains 94.74% of the variance in pollutant levels, suggesting good performance.</code></pre>
+Overall R²: 0.947417 → The model explains 94.74% of the variance in pollutant levels, suggesting good performance.
+
+</code></pre>
 <p><em>Mean Squared Error (MSE)</em></p>
 <pre><code>CO₂_avg: 6.2006e-01 → This small one demonstrates some variation but remains within an acceptable range.
 PM10_avg: 2.17e-08 and PM25_avg: 4.519e-09 → Tiny errors, attesting precise predictions.
 NO₂_avg: 5.22e-05 → Small error which indicates good accuracy.
-Overall MSE: 1.53 → Low overall error, indicating strong model performance.</code></pre>
+Overall MSE: 1.53 → Low overall error, indicating strong model performance.
+
+</code></pre>
 <p><em>Root Mean Squared Error (RMSE)</em></p>
 <pre><code>CO₂_avg: 0.787445 → Slightly higher than MSE, but still reasonable.
 PM10_avg: 0.000147 and PM25_avg: 0.000147 → Very small errors, showing high precision.
 NO₂_avg: 0.000147 → Still low, indicating strong predictive capability.
-Overall RMSE: 1.2387 → Shows good overall accuracy, with minor errors.</code></pre>
+Overall RMSE: 1.2387 → Shows good overall accuracy, with minor errors.
+</code></pre>
 </div>
 </div>
 </div>
@@ -9485,10 +9497,13 @@ Overall RMSE: 1.2387 → Shows good overall accuracy, with minor errors.</code><
 <p><strong>Overall Interpretation</strong></p>
 <p>✅ Performance:</p>
 <pre><code>Ridge performs well, with good R² values and low error metrics across all pollutants.
-The model captures most of the variance in air pollutant levels, making it a strong predictive tool.</code></pre>
+The model captures most of the variance in air pollutant levels, making it a strong predictive tool.
+
+</code></pre>
 <p>⚠️ Potential Areas for Improvement:</p>
 <pre><code>Hyperparameter tuning could further refine predictions.
-Compared to other algorithms (Random Forests, MLP), Ridge is less challenging to interpret. Feature importance insights show the contributions of many characteristics in emissions.</code></pre>
+Compared to other algorithms (Random Forests, MLP), Ridge is less challenging to interpret. Feature importance insights show the contributions of many characteristics in emissions.
+</code></pre>
 </div>
 </div>
 </div>
@@ -10090,21 +10105,28 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 PM10_avg: 0.000050 → Very small, meaning precise predictions for PM10 emissions.
 PM25_avg: 0.000026 → Extremely low, showing minimal deviation from true values.
 NO₂_avg: 0.000907 → Small error, suggesting good predictive performance.
-Overall MAE: 0.101093 → Relatively low, confirming the model's ability to make small absolute errors across all pollutants.</code></pre>
+Overall MAE: 0.101093 → Relatively low, confirming the model's ability to make small absolute errors across all pollutants.
+
+</code></pre>
 <p>R Squared (R²)</p>
 <pre><code>CO₂_avg: 0.926866 → Very high, meaning the model captures almost all variance in CO₂ levels.
 PM10_avg: 0.979160, PM25_avg: 0.981599, NO₂_avg: 0.938189 → All values are above 0.93, indicating good predictive power.
-Overall R²: 0.956453 → The model explains 95.64% of the variance in pollutant levels, which is slightly better than the Ridge Regressor.</code></pre>
+Overall R²: 0.956453 → The model explains 95.64% of the variance in pollutant levels, which is slightly better than the Ridge Regressor.
+
+</code></pre>
 <p>Mean Squared Error (MSE)</p>
 <pre><code>CO₂_avg: 5.419786e-01 → Slightly lower than the Ridge Regressor and suggests good performance.
 PM10_avg:1.603646e-08, PM25_avg: 3.465032e-09 → Extremely small errors, confirming high precision.
 NO₂_avg: 2.475956e-06 → Minimal error, attesting the model's accuracy.
-Overall MSE: 1.354953e-01 → Indicates an overall improvement in prediction accuracy.</code></pre>
+Overall MSE: 1.354953e-01 → Indicates an overall improvement in prediction accuracy.
+
+</code></pre>
 <p>Root Mean Squared Error (RMSE)</p>
 <pre><code>CO₂_avg: 0.736192 → A bit higher than Random Forest, but still good performance.
 PM10_avg: 0.000127 and PM25_avg: 0.000059 → Extremely small, reinforcing accurate predictions.
 NO₂_avg: 0.000059 → Small error, showing strong predictive capability.
-Overall RMSE: 0.368097 → Lower than Ridge, indicating a better overall accuracy.</code></pre>
+Overall RMSE: 0.368097 → Lower than Ridge, indicating a better overall accuracy.
+</code></pre>
 </div>
 </div>
 </div>
@@ -10280,10 +10302,13 @@ Overall RMSE: 0.368097 → Lower than Ridge, indicating a better overall accurac
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Overall Interpretation</strong></p>
 <p>✅ Performance:</p>
-<pre><code>The MLP Regressor shows a good performance.</code></pre>
+<pre><code>The MLP Regressor shows a good performance.
+
+</code></pre>
 <p>⚠️ Potential Areas for Improvement:</p>
 <pre><code>While MLP performs well, feature importance interpretation is less intuitive, as neural networks do not provide straightforward coefficient values like linear models.
-Hyperparameter tuning could further improve accuracy.</code></pre>
+Hyperparameter tuning could further improve accuracy.
+</code></pre>
 </div>
 </div>
 </div>
@@ -10320,7 +10345,8 @@ Hyperparameter tuning could further improve accuracy.</code></pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [66]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">rf_model</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Random Forest Hyperparameters Tuning</span>
+<span class="n">rf_model</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">param_grid_rf</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"n_estimators"</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
     <span class="s2">"max_depth"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
@@ -10513,7 +10539,9 @@ Overall   0.102491  0.955143  1.364958e-01  0.369453
 <div class="jp-InputPrompt jp-InputArea-prompt">In [68]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">param_grid_ridge</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"alpha"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]}</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Ridge Model Hyperparameters Tuning</span>
+
+<span class="n">param_grid_ridge</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"alpha"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]}</span>
 
 <span class="n">ridge_results</span><span class="p">,</span> <span class="n">eval_matrix_best_ridge</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">smart_grid_search</span><span class="p">(</span>
     <span class="n">ridge_model</span><span class="p">,</span> <span class="s2">"Ridge"</span><span class="p">,</span> <span class="n">param_grid_ridge</span><span class="p">,</span> <span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test_scaled</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">cv_splits</span><span class="o">=</span><span class="mi">5</span>
@@ -10701,7 +10729,8 @@ Overall   0.114535  0.947424  1.549906e-01  0.393688
 <div class="jp-InputPrompt jp-InputArea-prompt">In [70]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">mlp_tuned_model</span> <span class="o">=</span> <span class="n">MLPRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># MLP Hyperparameters Tuning</span>
+<span class="n">mlp_tuned_model</span> <span class="o">=</span> <span class="n">MLPRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
 <span class="n">param_grid_mlp</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"regressor__mlp__hidden_layer_sizes"</span><span class="p">:</span> <span class="p">[(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">),(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">128</span><span class="p">)],</span>
@@ -10901,8 +10930,8 @@ Overall   0.101172  0.957805  1.340521e-01  0.366131
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Overall outcomes and future perspectives</strong></p>
 <p>In conclusion, it is evident that petrol and diesel vehicles play a significant role in pollutant emissions. Heavy goods vehicles and buses also contribute notably to pollution. The Ridge model provides compelling evidence for this, unlike the other models, whose contributions in terms of characteristics appear somewhat nuanced.</p>
-<p>The data indicate that CO2 remains the most significant pollutant, primarily influenced by petrol, diesel, and HGVs.
-The impact of electric vehicles remains comparatively low, highlighting the need to promote more electric vehicles.
+<p>The data indicate that CO2 remains the most significant pollutant, primarily influenced by petrol, diesel, and HGVs. 
+The impact of electric vehicles remains comparatively low, highlighting the need to promote more electric vehicles. 
 Predictions for the coming years, based solely on data from 2019, may help to quantify the effects of these elements on pollution and implement gradual measures according to the impact of these various characteristics.</p>
 <p>Future actions to consider include incorporating explainable AI (XAI) to enhance clarity of interpretation or employing techniques like SHAP or LIME to enable decision-makers to act more confidently.</p>
 </div>
