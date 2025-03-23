@@ -8700,7 +8700,7 @@ Model loaded from ./checkpoints/random_forest_regressor.pkl
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Feature Importance Insights</strong></p>
-<p>Diesel and petrol vehicles are the strongest predictors of CO₂ and NO₂ emissions. Electric cars also have a non-negligible impact.</p>
+<p>Diesel and petrol vehicles are the strongest predictors of CO₂ and NO₂ emissions. Electric cars have a partial contribution.</p>
 <p>Strangely, electric cars are the most essential feature for PM10 and PM25, followed by Diesel and Petrol vehicles. Buses and coaches also had an impact.</p>
 </div>
 </div>
@@ -9480,10 +9480,9 @@ Overall RMSE: 1.2387 → Shows good overall accuracy, with minor errors.
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Feature Importance Insights</strong></p>
-<p>CO₂ emissions are strongly influenced by Petrol and diesel cars.  Buses and Heavy Goods Vehicles (HGVs) and articulated lorries (2 axles) also have a notable impact.</p>
-<p>PM10 emissions are primarily influenced by petrol vehicles, followed by Diesel cars, motorcycles and Buses. Electric vehicles appear to not contribute to the emissions.</p>
-<p>PM2.5 emissions are significantly impacted by petrol cars and phv.</p>
-<p>NO₂ emissions are heavily driven by Diesel cars and Petrol vehicles, while electric cars appear to contribute less.</p>
+<p>The Ridge regressor shows that petrol and diesel vehicles, especially cars, PHVs, and buses, mainly contribute to CO₂, PM10, PM2.5, and NO₂ emissions.</p>
+<p>Diesel cars dominate NO₂ emissions, while petrol PHVs and cars are key drivers for Particulate Matter.</p>
+<p>Electric vehicles consistently show negative coefficients, indicating a reduction in all pollutants. Urban area features have smaller but varied impacts.</p>
 </div>
 </div>
 </div>
@@ -10286,10 +10285,9 @@ Overall RMSE: 0.368097 → Lower than Ridge, indicating a better overall accurac
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Feature Importance Insights</strong></p>
-<p>CO₂_avg: The most influential features are coaches (vkm_coaches), bus mileage (vkm_buses), and HGVs (articulated and rigid). The congestion zones (inner/outer London) also impact the emissions. This shows that heavy vehicles contribute significantly to CO₂ emissions.</p>
-<p>PM10_avg: HGVs with 4+ and 2 axles, followed by coaches, are impacting emissions. Petrol and Diesel vehicles also contribute to PM10 pollution.</p>
-<p>PM25_avg: Surprisingly, the most significant factor is Electric vehicles, followed by HGVs with two axles and motorcycles.</p>
-<p>NO₂_avg: Petrol vehicles, taxis, and articulated HGVs are the most significant contributors.</p>
+<p>CO₂ emissions are mainly influenced by buses and HGVs, highlighting the impact of heavy vehicles.</p>
+<p>PM10 and PM2.5 are driven by HGVs, motorcycles and urban zones, with some contribution from electric vehicles, possibly due to non-exhaust sources.</p>
+<p>NO₂ emissions are largely linked to petrol and diesel vehicles, especially cars, PHVs and LGVs.</p>
 </div>
 </div>
 </div>
@@ -10916,7 +10914,10 @@ Overall   0.101172  0.957805  1.340521e-01  0.366131
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Interpretation on tuning</strong></p>
-<p>Except for some values, like the RMSE of MLP Regressor or the RMSE of Random Forest, the tuning techniques have slightly enhanced the performance of the various models, as evidenced by the comparisons between the previous and new metrics. These changes in performance, even for slightly increased RMSEs, probably indicate that our tuned models are unlikely to be overfit models.</p>
+<p>Except for some metrics, like the metrics of Random Forest, the tuning techniques have slightly enhanced the performance of the various models, as evidenced by the comparisons between the previous and new metrics. These changes in performance, even for slightly increased metrics, probably indicate that our tuned models are unlikely to be overfit models.</p>
+<p>The Ridge Regressor's performance was virtually unchanged after hyperparameter tuning. R² and MSE saw only negligible improvements - co2_avg MAE and RMSE improved by just 0.000047 and 0.000070 - while pm10_avg and pm25_avg remained almost the same, indicating the initial model was already highly optimised.</p>
+<p>Hyperparameter tuning only marginally affected the Random Forest model's performance, with nearly unchanged MAE, R², MSE and RMSE across pollutants. Minor increases in error metrics for pm10_avg and pm25_avg, along with a slight drop in R², suggest that the initial model was already well-optimised.</p>
+<p>Hyperparameter tuning yielded a slight improvement in overall model performance. R² scores increased for all pollutants while MAE, MSE and RMSE decreased for pm10_avg, pm25_avg and no2_avg, indicating enhanced prediction accuracy. A minor MAE rise for co2_avg was outweighed by gains in other areas, confirming a consistent improvement, particularly for acceptable particulate predictions.</p>
 <p>One could choose to combine these models for different pollutants to achieve optimal predictions while handling interpretations. For example, a combination of the MLP regressor and Ridge regressor can be used to link the interpretative strength of Ridge models with the performance strength of the MLP and provide stakeholders with models that combine good predictions and interpretability.</p>
 </div>
 </div>
@@ -10928,12 +10929,28 @@ Overall   0.101172  0.957805  1.340521e-01  0.366131
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>Feature Importance Overview</strong></p>
+<p><em>CO₂ Emissions</em></p>
+<p>Across all models, diesel and petrol vehicles emerged as major contributors. The Ridge model emphasised hybrid vehicles (PHVs) and diesel cars with strong positive coefficients. The MLP model highlighted the impact of buses and HGVs (rigid and articulated). Random Forest revealed high importance for diesel LGVs and electric cars.</p>
+<p><em>PM10 and PM2.5 Emissions</em></p>
+<p>Petrol and diesel vehicles, motorcycles, and buses consistently showed influence across Ridge and MLP models. The Ridge model showed negative coefficients for some electric vehicles, while the MLP model identified motorcycles and HGVs as key contributors. Interestingly, Random Forest ranked electric cars highly for both PM10 and PM2.5, potentially indicating proxy effects like traffic presence or non-exhaust particulate sources.</p>
+<p><em>NO₂ Emissions</em></p>
+<p>Diesel cars dominate Ridge and Random Forest models, with high positive coefficients and importance scores. PHVs and LGVs also played notable roles. The MLP model highlighted petrol cars, diesel PHVs, and rigid HGVs as major contributors.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Overall outcomes and future perspectives</strong></p>
-<p>In conclusion, it is evident that petrol and diesel vehicles play a significant role in pollutant emissions. Heavy goods vehicles and buses also contribute notably to pollution. The Ridge model provides compelling evidence for this, unlike the other models, whose contributions in terms of characteristics appear somewhat nuanced.</p>
-<p>The data indicate that CO2 remains the most significant pollutant, primarily influenced by petrol, diesel, and HGVs. 
-The impact of electric vehicles remains comparatively low, highlighting the need to promote more electric vehicles. 
-Predictions for the coming years, based solely on data from 2019, may help to quantify the effects of these elements on pollution and implement gradual measures according to the impact of these various characteristics.</p>
-<p>Future actions to consider include incorporating explainable AI (XAI) to enhance clarity of interpretation or employing techniques like SHAP or LIME to enable decision-makers to act more confidently.</p>
+<p>In conclusion, this study successfully demonstrates the power of machine learning for predicting atmospheric emissions using the 2019 LAEI. We achieved robust predictive performance across multiple pollutants by integrating thorough data cleaning, practical implementation, and rigorous model tuning. Our analysis revealed that petrol, diesel, and heavy goods vehicles are key contributors to emissions, providing actionable insights for environmental policy. These results lay a strong foundation for extending the approach to longer historical periods and enhancing model interpretability, ultimately supporting more informed and sustainable urban planning decisions.</p>
+<p>As the impact of electric vehicles remains comparatively low, this highlights the need to promote more Electric vehicles. 
+Predictions for the coming years, based on this study, may help quantify the effects of these elements on pollution and implement gradual measures according to the impact of these various characteristics.</p>
+<p>Future actions to consider involve incorporating explainable AI (XAI) or employing techniques such as SHAP or LIME to enhance interpretative clarity, thereby enabling decision-makers to act with greater confidence.</p>
 </div>
 </div>
 </div>
