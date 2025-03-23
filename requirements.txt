@@ -5,3 +5,5 @@ seaborn
 scikit-learn
 joblib
 IPython
+geopandas
+folium
